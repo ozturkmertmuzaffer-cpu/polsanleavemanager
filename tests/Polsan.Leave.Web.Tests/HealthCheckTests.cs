@@ -26,6 +26,24 @@ public sealed class HealthCheckTests
         File.Exists(database.FilePath).ShouldBeFalse();
     }
 
+    // AC-6 — the directory exists but the file does not; the configuration even allows creation.
+    // The check must report Unhealthy and must not create the file (review 0001, L5).
+    [Fact]
+    public async Task Health_DatabaseFileMissing_Returns503AndDoesNotCreateFile()
+    {
+        var directory = Path.Combine(Path.GetTempPath(), "polsan-leave-tests");
+        Directory.CreateDirectory(directory);
+        var missing = Path.Combine(directory, $"{Guid.NewGuid():N}.db");
+        await using var factory = new TestWebApplicationFactory { ConnectionString = $"Data Source={missing};Mode=ReadWriteCreate" };
+        var client = factory.CreateClient();
+
+        var response = await client.GetAsync(Health, TestContext.Current.CancellationToken);
+
+        response.StatusCode.ShouldBe(HttpStatusCode.ServiceUnavailable);
+        (await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken)).ShouldBe("Unhealthy");
+        File.Exists(missing).ShouldBeFalse();
+    }
+
     // AC-6 — the database file sits in a directory that does not exist, so it cannot be opened.
     [Fact]
     public async Task Health_DatabaseUnreachable_Returns503UnhealthyOnly()
