@@ -26,6 +26,20 @@ public sealed class PagesTests : IClassFixture<TestWebApplicationFactory>
         document.Text("h1").ShouldBe(AppTitle);
     }
 
+    // AC-2 — at page level: the home page is rendered inside the main layout, menu empty.
+    [Fact]
+    public async Task Home_Get_UsesMainLayoutWithEmptyMenu()
+    {
+        var response = await _client.GetAsync(new Uri("/", UriKind.Relative), TestContext.Current.CancellationToken);
+
+        var document = await Html.ParseAsync(response);
+        document.Text("header .brand").ShouldBe(AppTitle);
+        var menu = document.QuerySelector("nav.app-menu");
+        menu.ShouldNotBeNull();
+        menu.Children.ShouldBeEmpty();
+        document.QuerySelector("main.app-content h1").ShouldNotBeNull();
+    }
+
     // AC-15 — the parsed document is the raw server response: no JavaScript has run.
     [Fact]
     public async Task Home_Get_InitialHtmlContainsTitleAndText()
