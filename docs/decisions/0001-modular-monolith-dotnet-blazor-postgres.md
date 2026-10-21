@@ -2,6 +2,7 @@
 
 - Status: Accepted
 - Date: 2026-10-21
+- Revised: 2026-10-21 — mimari test aracının adı NetArchTest → ArchUnitNET (plan 0001, R-3); karar değişmedi.
 
 ## Context
 Polsan'ın 50–100 çalışanı için izin yönetim sistemi kurulacak. Geliştirme ekibi 5 kişi. Kurallar
@@ -12,7 +13,7 @@ Docker kurulu değil.
 ## Decision
 Tek deploy edilebilir **modüler monolit** kuruyoruz: ASP.NET Core (.NET 10 LTS) + Blazor arayüz,
 EF Core + **PostgreSQL**, modüller (`Staff`, `Policy`, `Requests`, `Balance`, `Audit`) ayrı projeler
-ve yalnızca `Contracts` üzerinden konuşuyor; sınırlar NetArchTest ile korunuyor. Uygulama
+ve yalnızca `Contracts` üzerinden konuşuyor; sınırlar ArchUnitNET ile korunuyor. Uygulama
 **şirket içi sunucuda**, yalnızca iç ağdan erişilebilir şekilde çalışıyor.
 
 ## Consequences

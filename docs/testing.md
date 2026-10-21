@@ -9,7 +9,7 @@
 | Katman | Araç | Kapsam | Trait / profil |
 |---|---|---|---|
 | Unit | xUnit + Shouldly | Domain ve Application kuralları | (trait yok) → `[fast]` |
-| Mimari | NetArchTest | `docs/architecture.md` yasak bağımlılıkları | (trait yok) → `[fast]` |
+| Mimari | ArchUnitNET | `docs/architecture.md` yasak bağımlılıkları | (trait yok) → `[fast]` |
 | Bileşen | bUnit | Blazor sayfa/bileşen durumları | (trait yok) → `[fast]` |
 | Entegrasyon | xUnit + gerçek PostgreSQL | EF eşlemeleri, transaction'lar, eşzamanlılık | `Category=Integration` → full |
 | E2E | Playwright for .NET (headless, tek worker) | Kritik akışlar | `Category=E2E` → full |
@@ -27,6 +27,12 @@
   `WebApplicationFactory` (Kestrel) ile süreç içinde başlatılır, tarayıcı ve uygulama fixture
   `DisposeAsync` içinde — hata ve timeout dahil — kapatılır. Ayrı sunucu süreci bırakılmaz.
 - Zaman: testler `FakeTimeProvider` kullanır; gerçek saate bağlı test yoktur.
+- **Yerel kurulum ön koşulları** (full profil için; yoksa full check kırmızıdır):
+  1. PostgreSQL 16+ kurulu ve çalışıyor; `LEAVE_TEST_DB` ortam değişkeni bir test veritabanına
+     bağlantı dizesi (ör. `Host=localhost;Database=leave_test;Username=...;Password=...`).
+  2. Playwright Chromium bir kez kurulu: build'den sonra
+     `powershell -File tests/Polsan.Leave.E2E.Tests/bin/Debug/net10.0/playwright.ps1 install chromium`
+     (CI'da `--with-deps` ile). Check bunu yapmaz — ağ gerektirir ve tek seferliktir.
 
 ## What must be tested
 - Her iş kuralı (`docs/domain.md` BR-1…BR-n) en az bir unit testle, `[Trait("Rule", "BR-n")]` ile.

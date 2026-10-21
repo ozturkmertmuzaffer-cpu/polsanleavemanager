@@ -16,7 +16,7 @@ Buradaki her kural ya araçla zorlanır (tercih edilen) ya da review'da kontrol 
 - .NET 10 (LTS), C# 14 — SDK sürümü `global.json` ile sabitlenir.
 - ASP.NET Core 10 + Blazor (Interactive Server), EF Core 10 + Npgsql, PostgreSQL 16+.
 - ASP.NET Core Identity (kimlik doğrulama).
-- Test: xUnit, Shouldly, bUnit, NetArchTest, Playwright for .NET.
+- Test: xUnit v3 (`xunit.v3.mtp-off`, VSTest ile), Shouldly, bUnit, ArchUnitNET, Playwright for .NET.
 - Paket sürümleri `Directory.Packages.props` ile merkezi yönetilir (Central Package Management).
 
 ## Naming
@@ -47,5 +47,6 @@ Buradaki her kural ya araçla zorlanır (tercih edilen) ya da review'da kontrol 
 ## Enforced by tooling
 - `Directory.Build.props`: `Nullable=enable`, `TreatWarningsAsErrors=true`, `AnalysisLevel=latest-recommended`.
 - `.editorconfig` + `dotnet format --verify-no-changes` (`scripts/check`, format adımı).
-- Mimari kurallar: NetArchTest testleri (`docs/architecture.md`, Forbidden dependencies).
+- Mimari kurallar: ArchUnitNET testleri + öz-testler (`docs/architecture.md`, Forbidden dependencies).
+- Şimdiki zaman API'leri: BannedApiAnalyzers (`BannedSymbols.txt`, `RS0030` = hata).
 - Güvenlik açığı olan paket: `dotnet list package --vulnerable --include-transitive` (`scripts/check`).

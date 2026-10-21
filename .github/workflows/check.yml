@@ -17,10 +17,35 @@ jobs:
 
   check:
     runs-on: ubuntu-latest
+    services:
+      # Real PostgreSQL for Category=Integration tests (docs/testing.md). Throwaway CI credentials.
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: leave
+          POSTGRES_PASSWORD: leave
+          POSTGRES_DB: leave_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U leave"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      LEAVE_TEST_DB: Host=localhost;Port=5432;Database=leave_test;Username=leave;Password=leave
+      DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+      DOTNET_NOLOGO: "1"
     steps:
       - uses: actions/checkout@v4
-      # The bootstrap workflow may add toolchain setup steps here (e.g. setup-java, setup-node)
-      # to match the commands it writes into scripts/check.conf.
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      # Playwright Chromium (one-time per runner; check itself never downloads anything).
+      - name: Install Playwright Chromium
+        run: |
+          dotnet build tests/Polsan.Leave.E2E.Tests --disable-build-servers -p:UseSharedCompilation=false
+          pwsh tests/Polsan.Leave.E2E.Tests/bin/Debug/net10.0/playwright.ps1 install --with-deps chromium
       # --fast is for the inner loop only; CI always runs the full contract (docs/testing.md).
       - name: Verification contract
         run: |

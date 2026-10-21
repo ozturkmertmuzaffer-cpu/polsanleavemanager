@@ -34,7 +34,7 @@ veri sayılır. Uygulama yalnızca şirket içi ağda, şirket içi sunucuda ça
 
 ## Dependencies
 - Yeni bir NuGet paketi eklemek insan onayı ister (plan içinde gerekçesiyle belirtilir).
-- Lisans: MIT, Apache-2.0 veya BSD; aktif bakımı olan paketler.
+- Lisans: MIT, Apache-2.0, BSD veya PostgreSQL License (Npgsql; plan 0001 R-5); aktif bakımı olan paketler.
 - `dotnet list package --vulnerable --include-transitive` `scripts/check` içinde çalışır;
   bilinen açık bulunursa check kırmızı olur.
 

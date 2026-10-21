@@ -34,15 +34,18 @@ Host: `Polsan.Leave.Web` (Blazor + composition root).
 - UI yalnızca `Application` servislerini çağırır.
 
 ## Forbidden dependencies (make them testable)
-Mimari testler (NetArchTest) `scripts/check` içinde her kuralı doğrular:
+Mimari testler (ArchUnitNET, `tests/Polsan.Leave.Architecture.Tests`) ve derleme analyzer'ı
+`scripts/check` içinde her kuralı doğrular; her kuralın ihlali yakaladığı öz-testlerle kanıtlanır:
 1. Bir modül başka bir modülün `Domain`, `Application` veya `Infrastructure` projesine referans
    vermez; yalnızca `Contracts` projesine. Bir modül başka bir modülün tablolarına erişmez.
 2. `*.Domain` projeleri EF Core, ASP.NET Core veya Blazor'a referans vermez.
-3. `Polsan.Leave.Web` içindeki Blazor bileşenleri `DbContext` veya `*.Infrastructure`
-   tiplerini kullanmaz.
-4. `DateTime.Now`, `DateTime.UtcNow`, `DateTimeOffset.Now` kullanımı yasaktır — zaman
-   `TimeProvider` ile enjekte edilir.
-5. Çalışma zamanında dış ağa (internete) çağrı yapılmaz (MVP).
+3. `Polsan.Leave.Web` içindeki Blazor bileşenleri `DbContext` (EF Core), Npgsql veya
+   `*.Infrastructure` tiplerini kullanmaz.
+4. `DateTime.Now`, `DateTime.UtcNow`, `DateTime.Today`, `DateTimeOffset.Now`, `DateTimeOffset.UtcNow`
+   kullanımı yasaktır — zaman `TimeProvider` ile enjekte edilir (BannedApiAnalyzers, `BannedSymbols.txt`;
+   ihlal derlemeyi `RS0030` ile kırar).
+5. Çalışma zamanında dış ağa (internete) çağrı yapılmaz (MVP). Kanıt kısmidir: iş modüllerinin
+   `System.Net.Http` bağımlılığı engellenir.
 
 ## Deliberately out of scope
 - Raporlama ve Excel dışa aktarım, ekip izin takvimi.
