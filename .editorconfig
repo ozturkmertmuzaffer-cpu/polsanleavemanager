@@ -64,3 +64,12 @@ dotnet_diagnostic.RS0030.severity = error
 [tests/**.cs]
 # Test method names follow <Method>_<State>_<Expected> (docs/conventions.md); underscores are intended.
 dotnet_diagnostic.CA1707.severity = none
+
+[tests/Polsan.Leave.Architecture.Tests/Fixtures/**.cs]
+# Deliberate rule violations for RuleSelfTests: ArchUnitNET inspects these types, nothing executes
+# them, so "unused field/member/type" diagnostics are expected here and nowhere else.
+dotnet_diagnostic.CS0169.severity = none
+dotnet_diagnostic.CA1812.severity = none
+dotnet_diagnostic.CA1823.severity = none
+dotnet_diagnostic.IDE0051.severity = none
+dotnet_diagnostic.IDE0052.severity = none
