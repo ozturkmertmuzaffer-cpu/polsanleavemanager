@@ -26,6 +26,11 @@
   `WebApplicationFactory` (Kestrel) ile süreç içinde başlatılır, tarayıcı ve uygulama fixture
   `DisposeAsync` içinde — hata ve timeout dahil — kapatılır. Ayrı sunucu süreci bırakılmaz.
 - Zaman: testler `FakeTimeProvider` kullanır; gerçek saate bağlı test yoktur.
+- **Uygulamayı yerelde çalıştırma** (spec 0001, R-1): `dotnet run --project src/Polsan.Leave.Web`
+  → `https://localhost:7186`. Veritabanı bağlantısı user-secrets ile verilir, ör.
+  `dotnet user-secrets set ConnectionStrings:LeaveDb "Data Source=leave.db" --project src/Polsan.Leave.Web`.
+  Bağlantı dizesi yoksa veya dosya henüz yoksa `/health` beklendiği gibi `Unhealthy` döner (dosyayı
+  F1'deki migration oluşturur).
 - **Yerel kurulum ön koşulu** (full profil için; yoksa full check kırmızıdır): Playwright Chromium
   bir kez kurulu — build'den sonra
   `powershell -File tests/Polsan.Leave.E2E.Tests/bin/Debug/net10.0/playwright.ps1 install chromium`
