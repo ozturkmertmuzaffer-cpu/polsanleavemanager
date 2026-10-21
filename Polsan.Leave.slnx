@@ -34,6 +34,7 @@
     <Project Path="src/Polsan.Leave.Web/Polsan.Leave.Web.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/Polsan.Leave.Architecture.Tests/Polsan.Leave.Architecture.Tests.csproj" />
     <Project Path="tests/Polsan.Leave.Web.Tests/Polsan.Leave.Web.Tests.csproj" />
   </Folder>
 </Solution>
