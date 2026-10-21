@@ -11,21 +11,27 @@ public sealed class HealthCheckTests
     [Fact]
     public async Task Health_DatabaseReachable_Returns200Healthy()
     {
-        await using var factory = new TestWebApplicationFactory { ConnectionString = TestDatabase.ConnectionString };
-        var client = factory.CreateClient();
+        var database = TestDatabase.Create();
+        using (database)
+        {
+            await using var factory = new TestWebApplicationFactory { ConnectionString = database.ConnectionString };
+            var client = factory.CreateClient();
 
-        var response = await client.GetAsync(Health, TestContext.Current.CancellationToken);
+            var response = await client.GetAsync(Health, TestContext.Current.CancellationToken);
 
-        response.StatusCode.ShouldBe(HttpStatusCode.OK);
-        (await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken)).ShouldBe("Healthy");
+            response.StatusCode.ShouldBe(HttpStatusCode.OK);
+            (await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken)).ShouldBe("Healthy");
+        }
+
+        File.Exists(database.FilePath).ShouldBeFalse();
     }
 
-    // AC-6 — nothing listens on port 1, so the database is unreachable.
+    // AC-6 — the database file sits in a directory that does not exist, so it cannot be opened.
     [Fact]
     public async Task Health_DatabaseUnreachable_Returns503UnhealthyOnly()
     {
-        const string unreachable = "Host=127.0.0.1;Port=1;Database=leave;Username=leave;Password=unused;Timeout=3";
-        await using var factory = new TestWebApplicationFactory { ConnectionString = unreachable };
+        var missing = Path.Combine(Path.GetTempPath(), "polsan-leave-tests", Guid.NewGuid().ToString("N"), "leave.db");
+        await using var factory = new TestWebApplicationFactory { ConnectionString = $"Data Source={missing};Mode=ReadWrite" };
         var client = factory.CreateClient();
 
         var response = await client.GetAsync(Health, TestContext.Current.CancellationToken);
