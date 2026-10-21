@@ -1,25 +1,54 @@
 # Architecture
 
-> **Template — filled during bootstrap.** Describe the architecture you *decided on*, not an
-> aspiration. Agents read this file before planning; vague answers here become vague code.
-
 ## System overview
-<!-- 3–6 sentences: what the system is, its architectural style (monolith / modular monolith /
-services / etc.), and the one-line reason for that choice (link the ADR). -->
+Polsan Leave Manager, Polsan Teknoloji çalışanlarının (50–100 kişi, tek şirket / single-tenant)
+izin taleplerini, yönetici onaylarını ve izin bakiyelerini yöneten, şirket içi ağda çalışan bir
+web uygulamasıdır. Stil: **modüler monolit** — tek deploy edilebilir ASP.NET Core (.NET 10)
+uygulaması, Blazor arayüz, tek PostgreSQL veritabanı. Modüller derleme düzeyinde ayrı projelerdir
+ve birbirine yalnızca `Contracts` projeleri üzerinden erişir. Gerekçe: bu ölçekte dağıtık
+mimarinin maliyeti faydasını aşar; sınırlar ise mimari testlerle korunur
+(ADR `0001-modular-monolith-dotnet-blazor-postgres.md`). Kimlik doğrulama uygulamanın kendi
+hesaplarıyla yapılır (ADR `0002-own-user-accounts.md`).
+
+Proje adlandırması: `Polsan.Leave.<Modül>.<Katman>` — katmanlar `Domain` (saf C#),
+`Application` (use-case servisleri), `Infrastructure` (EF Core), `Contracts` (public arayüz).
+Host: `Polsan.Leave.Web` (Blazor + composition root).
 
 ## Modules / components and ownership
-<!-- One row per module: single responsibility + the data it owns (conceptual, not table-level). -->
 
 | Module | Single responsibility | Owns |
 |---|---|---|
-| | | |
+| Personel (`Staff`) | Çalışan kaydı, yönetici ilişkisi, roller, kimlik doğrulama | Çalışan, kullanıcı hesabı, rol, işe giriş / çıkış ve doğum tarihi |
+| İzin Politikası (`Policy`) | İzin türleri, resmî tatil takvimi, 4857 md.53 hak ediş hesabı, iş günü hesabı | İzin türü tanımları, tatil takvimi, ek gün tanımları |
+| İzin Talepleri (`Requests`) | Talep oluşturma, onay, red, iptal akışı | İzin talebi ve durum geçmişi |
+| Bakiye (`Balance`) | Hak, kullanım, iptal ve düzeltme hareketlerinin defteri (ledger), kalan bakiye | Bakiye hareketleri |
+| Denetim (`Audit`) | Kim, ne zaman, ne yaptı kaydı (onay, red, iptal, bakiye düzeltme) | Denetim kayıtları |
+| Web (`Web`) | Blazor arayüz, kimlik doğrulama uçları, composition root | Hiçbir iş verisi — yalnızca sunum |
 
 ## Communication rules
-<!-- When is a direct call allowed, when an event/message, when is it forbidden? -->
+- Modüller arası çağrı **senkron**dur ve yalnızca hedef modülün `Contracts` arayüzü üzerinden
+  yapılır (ör. `Requests` → `IBalanceService.Reserve/Consume/Release`).
+- Birden fazla modülü değiştiren bir işlem (ör. onay + bakiye düşümü + denetim kaydı) **tek
+  veritabanı transaction'ı** içinde yürür.
+- MVP'de mesaj kuyruğu, event bus veya arka plan iş kuyruğu yoktur.
+- UI yalnızca `Application` servislerini çağırır.
 
 ## Forbidden dependencies (make them testable)
-<!-- Concrete prohibitions an architecture test could assert, e.g.
-"Module A never accesses Module B's internal types or storage — only its public interface." -->
+Mimari testler (NetArchTest) `scripts/check` içinde her kuralı doğrular:
+1. Bir modül başka bir modülün `Domain`, `Application` veya `Infrastructure` projesine referans
+   vermez; yalnızca `Contracts` projesine. Bir modül başka bir modülün tablolarına erişmez.
+2. `*.Domain` projeleri EF Core, ASP.NET Core veya Blazor'a referans vermez.
+3. `Polsan.Leave.Web` içindeki Blazor bileşenleri `DbContext` veya `*.Infrastructure`
+   tiplerini kullanmaz.
+4. `DateTime.Now`, `DateTime.UtcNow`, `DateTimeOffset.Now` kullanımı yasaktır — zaman
+   `TimeProvider` ile enjekte edilir.
+5. Çalışma zamanında dış ağa (internete) çağrı yapılmaz (MVP).
 
 ## Deliberately out of scope
-<!-- Conscious non-goals for the current version. -->
+- Raporlama ve Excel dışa aktarım, ekip izin takvimi.
+- Bordro / İK sistemi entegrasyonu, Active Directory / Entra ID SSO.
+- İki adımlı (yönetici + İK) onay, vekil onaylayıcı.
+- Saatlik izin, avans (eksi) izin.
+- Native mobil uygulama, e-posta / bildirim gönderimi.
+- Sağlık raporu dosyası saklama.
+- Çok şirketli (multi-tenant) yapı, bulut barındırma.

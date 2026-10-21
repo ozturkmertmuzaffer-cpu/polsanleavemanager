@@ -1,17 +1,46 @@
 # Testing
 
-> **Template — filled during bootstrap.**
-
 ## The contract
 - Every acceptance criterion maps to at least one test (criterion ↔ test map lives in the plan).
 - Tests assert **behavior**, not implementation details or mere status codes.
 - The whole suite runs inside `scripts/check` — one command, everywhere.
 
 ## Frameworks & layout
-<!-- Test framework(s), where tests live, naming pattern. -->
+| Katman | Araç | Kapsam | Trait / profil |
+|---|---|---|---|
+| Unit | xUnit + Shouldly | Domain ve Application kuralları | (trait yok) → `[fast]` |
+| Mimari | NetArchTest | `docs/architecture.md` yasak bağımlılıkları | (trait yok) → `[fast]` |
+| Bileşen | bUnit | Blazor sayfa/bileşen durumları | (trait yok) → `[fast]` |
+| Entegrasyon | xUnit + gerçek PostgreSQL | EF eşlemeleri, transaction'lar, eşzamanlılık | `Category=Integration` → full |
+| E2E | Playwright for .NET (headless, tek worker) | Kritik akışlar | `Category=E2E` → full |
+
+- Testler `tests/` altında, modül başına `Polsan.Leave.<Modül>.Tests`; ayrıca
+  `Polsan.Leave.Architecture.Tests` ve `Polsan.Leave.E2E.Tests`. Adlandırma: `docs/conventions.md`.
+- **Fast/full ayrımı selector ile:** fast adımı `--filter "Category!=Integration&Category!=E2E"`,
+  full adımı `--filter "Category=Integration|Category=E2E"` — biri diğerinin tam tersi; yeni bir
+  test her zaman ikisinden birinde koşar. Proje listesiyle ayrım yapılmaz.
+- **Test veritabanı:** entegrasyon testleri `LEAVE_TEST_DB` bağlantısındaki gerçek PostgreSQL'e
+  bağlanır (yerelde kurulu PostgreSQL, CI'da GitHub Actions servis container'ı). Değişken yoksa
+  test **başarısız olur** — sessizce atlanmaz (Protected-tests rule). Her test kendi şemasını /
+  veritabanını oluşturur ve sonunda siler.
+- **Uygulamanın yaşam döngüsü (E2E):** test fixture'ının sorumluluğundadır. Uygulama
+  `WebApplicationFactory` (Kestrel) ile süreç içinde başlatılır, tarayıcı ve uygulama fixture
+  `DisposeAsync` içinde — hata ve timeout dahil — kapatılır. Ayrı sunucu süreci bırakılmaz.
+- Zaman: testler `FakeTimeProvider` kullanır; gerçek saate bağlı test yoktur.
 
 ## What must be tested
-<!-- e.g. every business rule (BR-n), every boundary/forbidden dependency, critical flows E2E/smoke. -->
+- Her iş kuralı (`docs/domain.md` BR-1…BR-n) en az bir unit testle, `[Trait("Rule", "BR-n")]` ile.
+- BR-1 sınır değerleri: kıdem 1 yıl, tam 5 yıl, 5 yıl + 1 gün, tam 15 yıl; yaş 18, 19, 49, 50;
+  İK ek gününün yasal minimumun altına indirilememesi.
+- BR-2 / BR-3: hafta sonu ve resmî tatil içeren aralıklar, yarım gün, yıl geçişi.
+- Her yasak bağımlılık kuralı bir mimari testle.
+- Her yetki kuralı (`docs/security.md`, AuthN / AuthZ): kendi talebi dışındakine erişim,
+  yöneticinin bağlı olmayan çalışana erişimi, kendi talebini onaylama — reddedilmeli.
+- Onay + bakiye düşümü + denetim kaydının tek transaction'da yazılması ve eşzamanlı iki onayda
+  bakiyenin eksiye düşmemesi (entegrasyon).
+- UI: spec'in "User experience" bölümündeki her durum (boş, yükleniyor, hata, başarılı, yetkisiz)
+  bUnit ile.
+- E2E (kritik akış): talep oluşturma → yönetici onayı → bakiyenin düşmesi.
 
 ## Protected-tests rule
 Weakening asserts, deleting, or skipping tests to reach green is forbidden. A red test triggers
