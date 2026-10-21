@@ -33,4 +33,7 @@
   <Folder Name="/src/">
     <Project Path="src/Polsan.Leave.Web/Polsan.Leave.Web.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Polsan.Leave.Web.Tests/Polsan.Leave.Web.Tests.csproj" />
+  </Folder>
 </Solution>
