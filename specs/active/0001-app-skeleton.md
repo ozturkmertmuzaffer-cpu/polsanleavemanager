@@ -35,11 +35,12 @@ kimlik doğrulama (F2), sunucuya kurulum.
   entegrasyon + E2E testleri ve güvenlik açığı olan paket kontrolünü çalıştırır;
   `./scripts/check --fast` yalnızca hızlı adımları çalıştırır. Hızlı ve full-only test kümeleri
   bir selector ve onun tersiyle ayrılır.
-- R-9: Gerçek PostgreSQL'e bağlanan en az bir entegrasyon testi vardır; test veritabanı
-  bağlantısı tanımlı değilse test başarısız olur, atlanmaz.
+- R-9: Gerçek bir SQLite veritabanına (geçici dosya) bağlanan en az bir entegrasyon testi vardır;
+  her test kendi veritabanı dosyasını oluşturur ve sonunda siler. Hiçbir ön kurulum gerektirmez.
 - R-10: Açılış sayfasının gerçek tarayıcıda açıldığını doğrulayan bir E2E duman testi vardır;
   uygulamayı ve tarayıcıyı test kendisi başlatır ve (hata / timeout dahil) kapatır.
-- R-11: CI her push ve PR'da full check'i .NET 10, PostgreSQL ve Playwright tarayıcısıyla çalıştırır.
+- R-11: CI her push ve PR'da full check'i .NET 10 ve Playwright tarayıcısıyla çalıştırır
+  (veritabanı için servis gerekmez).
 - R-12: Kod kuralları (`docs/conventions.md`, Enforced by tooling) derleme düzeyinde zorlanır:
   nullable açık, uyarılar hata, merkezi paket sürüm yönetimi, SDK sürümü sabit.
 
@@ -65,8 +66,9 @@ kimlik doğrulama (F2), sunucuya kurulum.
 - Çalışma zamanında dış ağa çağrı yapılmaz.
 - Check geride süreç bırakmaz (`./scripts/residue` ve `--fast` temiz).
 - Yeni NuGet paketleri `docs/security.md` lisans politikasına uyar ve planda listelenir.
-- Ön koşullar: yerelde PostgreSQL 16+ kurulu ve `LEAVE_TEST_DB` tanımlı; Playwright tarayıcısı
-  bir kez kurulmuş. Bunlar yokken full check kırmızıdır — bu beklenen davranıştır.
+- Veritabanı SQLite'tır (ADR 0003): geliştirici makinesine, CI'a veya sunucuya kurulum gerektirmez.
+- Ön koşul: Playwright tarayıcısı bir kez kurulmuş. Yokken full check kırmızıdır — bu beklenen
+  davranıştır.
 - Kapsam dışı: iş varlıkları ve tabloları, veritabanı migration'ları ile iş şeması, giriş /
   roller, menü öğeleri, sunucu kurulumu ve runbook, e-posta.
 
@@ -82,7 +84,7 @@ kimlik doğrulama (F2), sunucuya kurulum.
   mesajı içermez; aynı hata kimliği log kaydında yer alır. Hata, yalnızca test ortamında var olan
   bir tetikleyiciyle oluşturulur; üretim ortamında bu tetikleyici adresi 404 döner.
 - [ ] AC-5 — Veritabanı erişilebilirken sağlık kontrolü girişsiz olarak `Healthy` (HTTP 200) döner.
-- [ ] AC-6 — Veritabanına ulaşılamıyorken sağlık kontrolü `Unhealthy` (HTTP 503) döner; her iki
+- [ ] AC-6 — Veritabanı açılamıyorken (ör. dosyanın bulunduğu dizin yok) sağlık kontrolü `Unhealthy` (HTTP 503) döner; her iki
   durumda yanıt gövdesi yalnızca durum metnini içerir (veritabanı adı, bağlantı bilgisi, hata
   ayrıntısı yok).
 - [ ] AC-7 — Beş yasak bağımlılık kuralının her biri için otomatik bir kontrol (mimari test veya
@@ -91,8 +93,9 @@ kimlik doğrulama (F2), sunucuya kurulum.
   `DateTime.UtcNow` / `DateTimeOffset.Now` kullanımı derlemeyi kırar.
 - [ ] AC-8 — `docs/architecture.md`'deki beş modül ve Web, belirtilen katman/proje adlarıyla
   çözümde mevcuttur ve derlenir.
-- [ ] AC-9 — `LEAVE_TEST_DB` tanımlıyken entegrasyon testi gerçek PostgreSQL'e bağlanıp geçer;
-  tanımlı değilken başarısız olur (atlanmış sayılmaz).
+- [ ] AC-9 — Entegrasyon testi, kendi oluşturduğu geçici bir SQLite dosyasına gerçek bağlantıyla
+  bağlanıp geçer; test bittikten sonra dosya silinmiş olur. Test hiçbir ortam değişkeni veya
+  kurulum gerektirmez.
 - [ ] AC-10 — E2E duman testi headless tarayıcıda açılış sayfasını açar ve başlığı doğrular;
   test bittikten sonra uygulama ve tarayıcı süreci kalmaz.
 - [ ] AC-11 — `./scripts/check` ve `./scripts/check --fast` yeşil biter; `./scripts/residue` ve
@@ -112,6 +115,10 @@ kimlik doğrulama (F2), sunucuya kurulum.
 - [ ] Independent review done; real findings fixed, noise rejected with written rationale
 - [ ] Docs / ADRs updated if behavior or architecture changed
 - [ ] Spec moved to `specs/done/` (it becomes immutable there)
+
+## Change log
+- 2026-10-21 — R-08: veritabanı PostgreSQL → SQLite (ADR 0003); R-9, R-11, AC-6, AC-9 ve ön
+  koşullar güncellendi. Onay: Mert Öztürk (sohbette).
 
 ## Scorecard (fill at ship — honest numbers make the process improvable)
 | Metric | Value |

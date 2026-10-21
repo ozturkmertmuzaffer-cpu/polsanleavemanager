@@ -1,6 +1,6 @@
 # ADR 0001 — Modüler monolit: .NET 10 + Blazor + PostgreSQL, şirket içi barındırma
 
-- Status: Accepted
+- Status: Superseded by ADR-0003
 - Date: 2026-10-21
 - Revised: 2026-10-21 — mimari test aracının adı NetArchTest → ArchUnitNET (plan 0001, R-3); karar değişmedi.
 
