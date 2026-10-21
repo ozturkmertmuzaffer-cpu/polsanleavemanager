@@ -12,6 +12,11 @@ Thumbs.db
 # Logs
 *.log
 
+# SQLite databases hold personal data (ADR 0003, docs/security.md) — never commit them
+*.db
+*.db-wal
+*.db-shm
+
 # Claude Code personal settings (shared settings.json IS committed after init)
 .claude/settings.local.json
 

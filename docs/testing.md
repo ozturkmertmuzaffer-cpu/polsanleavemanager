@@ -28,7 +28,8 @@
 - Zaman: testler `FakeTimeProvider` kullanır; gerçek saate bağlı test yoktur.
 - **Uygulamayı yerelde çalıştırma** (spec 0001, R-1): `dotnet run --project src/Polsan.Leave.Web`
   → `https://localhost:7186`. Veritabanı bağlantısı user-secrets ile verilir, ör.
-  `dotnet user-secrets set ConnectionStrings:LeaveDb "Data Source=leave.db" --project src/Polsan.Leave.Web`.
+  `dotnet user-secrets set ConnectionStrings:LeaveDb "Data Source=C:\PolsanLeave\leave.db;Mode=ReadWrite" --project src/Polsan.Leave.Web`
+  — repo dışında mutlak bir yol (veritabanı kişisel veri taşır; `.gitignore` `*.db` dosyalarını ayrıca dışlar).
   Bağlantı dizesi yoksa veya dosya henüz yoksa `/health` beklendiği gibi `Unhealthy` döner (dosyayı
   F1'deki migration oluşturur).
 - **Yerel kurulum ön koşulu** (full profil için; yoksa full check kırmızıdır): Playwright Chromium
