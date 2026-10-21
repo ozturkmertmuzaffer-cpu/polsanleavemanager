@@ -32,6 +32,10 @@ Host: `Polsan.Leave.Web` (Blazor + composition root).
   veritabanı transaction'ı** içinde yürür.
 - MVP'de mesaj kuyruğu, event bus veya arka plan iş kuyruğu yoktur.
 - UI yalnızca `Application` servislerini çağırır.
+- **Render modu (karar 2026-10-21, review 0001 L8):** Blazor render modu globaldir —
+  `<Routes @rendermode="InteractiveServer" />` (`App.razor`), sayfalar kendi modunu seçmez; ilk
+  istek sunucuda ön-render edilir. Spec 0001 iskeleti henüz statik SSR'dir; değişiklik ilk
+  etkileşimli sayfayla F1'de yapılır.
 
 ## Forbidden dependencies (make them testable)
 Mimari testler (ArchUnitNET, `tests/Polsan.Leave.Architecture.Tests`) ve derleme analyzer'ı
