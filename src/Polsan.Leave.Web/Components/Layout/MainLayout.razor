@@ -1,0 +1,21 @@
+@inherits LayoutComponentBase
+@inject IStringLocalizer<SharedResource> Text
+
+<div class="page">
+    <header class="app-header">
+        <a class="brand" href="/">@Text["AppTitle"]</a>
+    </header>
+
+    @* Menu items arrive with the features that need them (spec 0001: empty by design). *@
+    <nav class="app-menu" aria-label="@Text["MainMenu"]"></nav>
+
+    <main class="app-content">
+        @Body
+    </main>
+</div>
+
+<div id="blazor-error-ui" data-nosnippet>
+    @Text["CircuitError"]
+    <a href="." class="reload">@Text["Reload"]</a>
+    <span class="dismiss">🗙</span>
+</div>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppTitle" xml:space="preserve">
+    <value>Polsan İzin Yönetimi</value>
+  </data>
+  <data name="MainMenu" xml:space="preserve">
+    <value>Ana menü</value>
+  </data>
+  <data name="HomeWelcome" xml:space="preserve">
+    <value>Polsan çalışanlarının izin talepleri ve izin bakiyeleri için ortak sistem. Menü öğeleri sonraki sürümlerde eklenecektir.</value>
+  </data>
+  <data name="NotFoundTitle" xml:space="preserve">
+    <value>Sayfa bulunamadı</value>
+  </data>
+  <data name="NotFoundMessage" xml:space="preserve">
+    <value>Aradığınız sayfa mevcut değil veya taşınmış olabilir.</value>
+  </data>
+  <data name="BackToHome" xml:space="preserve">
+    <value>Açılış sayfasına dön</value>
+  </data>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>Bir hata oluştu</value>
+  </data>
+  <data name="ErrorMessage" xml:space="preserve">
+    <value>İsteğiniz işlenirken beklenmeyen bir hata oluştu. Sorun devam ederse aşağıdaki hata kimliğiyle destek ekibine başvurun.</value>
+  </data>
+  <data name="ErrorIdLabel" xml:space="preserve">
+    <value>Hata kimliği</value>
+  </data>
+  <data name="CircuitError" xml:space="preserve">
+    <value>Beklenmeyen bir hata oluştu.</value>
+  </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Yeniden yükle</value>
+  </data>
+</root>

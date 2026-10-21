@@ -1,0 +1,35 @@
+:root {
+    --brand-dark: #12355b;
+    --text: #1b1b1b;
+    --link: #0b5cad;
+}
+
+html, body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--text);
+    background: #fff;
+    line-height: 1.5;
+}
+
+h1 {
+    font-size: 1.5rem;
+    margin-top: 0;
+}
+
+h1:focus {
+    outline: none;
+}
+
+a {
+    color: var(--link);
+}
+
+a:focus-visible {
+    outline: 2px solid var(--link);
+    outline-offset: 2px;
+}
+
+code {
+    overflow-wrap: anywhere;
+}

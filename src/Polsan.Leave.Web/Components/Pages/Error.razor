@@ -1,0 +1,24 @@
+@page "/Error"
+@inject IStringLocalizer<SharedResource> Text
+
+<PageTitle>@Text["ErrorTitle"] – @Text["AppTitle"]</PageTitle>
+
+<h1>@Text["ErrorTitle"]</h1>
+<p>@Text["ErrorMessage"]</p>
+
+@if (!string.IsNullOrEmpty(ErrorId))
+{
+    <p>
+        <strong>@Text["ErrorIdLabel"]:</strong> <code class="error-id">@ErrorId</code>
+    </p>
+}
+
+<p><a href="/">@Text["BackToHome"]</a></p>
+
+@code {
+    [CascadingParameter]
+    private HttpContext? HttpContext { get; set; }
+
+    // Same id GlobalExceptionHandler writes to the log (spec 0001, AC-4).
+    private string? ErrorId => HttpContext?.TraceIdentifier;
+}

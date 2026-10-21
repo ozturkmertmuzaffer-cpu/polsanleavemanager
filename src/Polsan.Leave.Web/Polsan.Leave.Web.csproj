@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
+    <UserSecretsId>polsan-leave-web</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Npgsql" />
+  </ItemGroup>
+
+  <!-- Composition root: the only project that references every module. -->
+  <ItemGroup>
+    <ProjectReference Include="..\Modules\Staff\Polsan.Leave.Staff.Contracts\Polsan.Leave.Staff.Contracts.csproj" />
+    <ProjectReference Include="..\Modules\Staff\Polsan.Leave.Staff.Application\Polsan.Leave.Staff.Application.csproj" />
+    <ProjectReference Include="..\Modules\Staff\Polsan.Leave.Staff.Infrastructure\Polsan.Leave.Staff.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Policy\Polsan.Leave.Policy.Contracts\Polsan.Leave.Policy.Contracts.csproj" />
+    <ProjectReference Include="..\Modules\Policy\Polsan.Leave.Policy.Application\Polsan.Leave.Policy.Application.csproj" />
+    <ProjectReference Include="..\Modules\Policy\Polsan.Leave.Policy.Infrastructure\Polsan.Leave.Policy.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Requests\Polsan.Leave.Requests.Contracts\Polsan.Leave.Requests.Contracts.csproj" />
+    <ProjectReference Include="..\Modules\Requests\Polsan.Leave.Requests.Application\Polsan.Leave.Requests.Application.csproj" />
+    <ProjectReference Include="..\Modules\Requests\Polsan.Leave.Requests.Infrastructure\Polsan.Leave.Requests.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Balance\Polsan.Leave.Balance.Contracts\Polsan.Leave.Balance.Contracts.csproj" />
+    <ProjectReference Include="..\Modules\Balance\Polsan.Leave.Balance.Application\Polsan.Leave.Balance.Application.csproj" />
+    <ProjectReference Include="..\Modules\Balance\Polsan.Leave.Balance.Infrastructure\Polsan.Leave.Balance.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Audit\Polsan.Leave.Audit.Contracts\Polsan.Leave.Audit.Contracts.csproj" />
+    <ProjectReference Include="..\Modules\Audit\Polsan.Leave.Audit.Application\Polsan.Leave.Audit.Application.csproj" />
+    <ProjectReference Include="..\Modules\Audit\Polsan.Leave.Audit.Infrastructure\Polsan.Leave.Audit.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

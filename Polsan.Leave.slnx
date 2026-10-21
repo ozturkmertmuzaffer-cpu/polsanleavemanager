@@ -30,4 +30,7 @@
     <Project Path="src/Modules/Staff/Polsan.Leave.Staff.Domain/Polsan.Leave.Staff.Domain.csproj" />
     <Project Path="src/Modules/Staff/Polsan.Leave.Staff.Infrastructure/Polsan.Leave.Staff.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Polsan.Leave.Web/Polsan.Leave.Web.csproj" />
+  </Folder>
 </Solution>

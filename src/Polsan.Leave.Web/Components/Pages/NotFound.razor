@@ -1,0 +1,9 @@
+@page "/not-found"
+@layout MainLayout
+@inject IStringLocalizer<SharedResource> Text
+
+<PageTitle>@Text["NotFoundTitle"] – @Text["AppTitle"]</PageTitle>
+
+<h1>@Text["NotFoundTitle"]</h1>
+<p>@Text["NotFoundMessage"]</p>
+<p><a href="/">@Text["BackToHome"]</a></p>
