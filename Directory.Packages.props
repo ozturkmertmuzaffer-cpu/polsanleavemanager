@@ -8,6 +8,8 @@
     <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.1" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="bunit" Version="2.12.5" />
+    <!-- Same version bunit brings; referenced directly because Html.cs parses responses with it. -->
+    <PackageVersion Include="AngleSharp" Version="1.8.5" />
     <PackageVersion Include="TngTech.ArchUnitNET.xUnitV3" Version="0.13.4" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="10.0.13" />
     <PackageVersion Include="Microsoft.Extensions.Diagnostics.Testing" Version="10.11.0" />
