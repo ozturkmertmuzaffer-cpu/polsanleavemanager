@@ -35,7 +35,10 @@ Host: `Polsan.Leave.Web` (Blazor + composition root).
 
 ## Forbidden dependencies (make them testable)
 Mimari testler (ArchUnitNET, `tests/Polsan.Leave.Architecture.Tests`) ve derleme analyzer'ı
-`scripts/check` içinde her kuralı doğrular; her kuralın ihlali yakaladığı öz-testlerle kanıtlanır:
+`scripts/check` içinde her kuralı doğrular; her kuralın ihlali yakaladığı öz-testlerle kanıtlanır.
+Kurallar 1–3 ve 5 **tip bağımlılığı** olarak doğrulanır: kullanılmayan bir proje/paket referansı
+testten geçer, o referanstaki bir tip kullanıldığı anda test kırmızı olur. Review'da kullanılmayan
+referanslar da reddedilir.
 1. Bir modül başka bir modülün `Domain`, `Application` veya `Infrastructure` projesine referans
    vermez; yalnızca `Contracts` projesine. Bir modül başka bir modülün tablolarına erişmez.
 2. `*.Domain` projeleri EF Core, ASP.NET Core veya Blazor'a referans vermez.
