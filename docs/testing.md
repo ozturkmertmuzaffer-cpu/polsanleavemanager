@@ -11,7 +11,7 @@
 | Unit | xUnit + Shouldly | Domain ve Application kuralları | (trait yok) → `[fast]` |
 | Mimari | ArchUnitNET | `docs/architecture.md` yasak bağımlılıkları | (trait yok) → `[fast]` |
 | Bileşen | bUnit | Blazor sayfa/bileşen durumları | (trait yok) → `[fast]` |
-| Entegrasyon | xUnit + gerçek PostgreSQL | EF eşlemeleri, transaction'lar, eşzamanlılık | `Category=Integration` → full |
+| Entegrasyon | xUnit + gerçek SQLite (geçici dosya) | EF eşlemeleri, transaction'lar, eşzamanlılık | `Category=Integration` → full |
 | E2E | Playwright for .NET (headless, tek worker) | Kritik akışlar | `Category=E2E` → full |
 
 - Testler `tests/` altında, modül başına `Polsan.Leave.<Modül>.Tests`; ayrıca
@@ -19,20 +19,18 @@
 - **Fast/full ayrımı selector ile:** fast adımı `--filter "Category!=Integration&Category!=E2E"`,
   full adımı `--filter "Category=Integration|Category=E2E"` — biri diğerinin tam tersi; yeni bir
   test her zaman ikisinden birinde koşar. Proje listesiyle ayrım yapılmaz.
-- **Test veritabanı:** entegrasyon testleri `LEAVE_TEST_DB` bağlantısındaki gerçek PostgreSQL'e
-  bağlanır (yerelde kurulu PostgreSQL, CI'da GitHub Actions servis container'ı). Değişken yoksa
-  test **başarısız olur** — sessizce atlanmaz (Protected-tests rule). Her test kendi şemasını /
-  veritabanını oluşturur ve sonunda siler.
+- **Test veritabanı:** entegrasyon testleri test başına geçici bir dosyada oluşturulan gerçek bir
+  SQLite veritabanına bağlanır (`TestDatabase`) ve test sonunda dosyayı siler. Kurulum veya ortam
+  değişkeni gerekmez (ADR 0003).
 - **Uygulamanın yaşam döngüsü (E2E):** test fixture'ının sorumluluğundadır. Uygulama
   `WebApplicationFactory` (Kestrel) ile süreç içinde başlatılır, tarayıcı ve uygulama fixture
   `DisposeAsync` içinde — hata ve timeout dahil — kapatılır. Ayrı sunucu süreci bırakılmaz.
 - Zaman: testler `FakeTimeProvider` kullanır; gerçek saate bağlı test yoktur.
-- **Yerel kurulum ön koşulları** (full profil için; yoksa full check kırmızıdır):
-  1. PostgreSQL 16+ kurulu ve çalışıyor; `LEAVE_TEST_DB` ortam değişkeni bir test veritabanına
-     bağlantı dizesi (ör. `Host=localhost;Database=leave_test;Username=...;Password=...`).
-  2. Playwright Chromium bir kez kurulu: build'den sonra
-     `powershell -File tests/Polsan.Leave.E2E.Tests/bin/Debug/net10.0/playwright.ps1 install chromium`
-     (CI'da `--with-deps` ile). Check bunu yapmaz — ağ gerektirir ve tek seferliktir.
+- **Yerel kurulum ön koşulu** (full profil için; yoksa full check kırmızıdır): Playwright Chromium
+  bir kez kurulu — build'den sonra
+  `powershell -File tests/Polsan.Leave.E2E.Tests/bin/Debug/net10.0/playwright.ps1 install chromium`
+  (CI'da `--with-deps` ile). Check bunu yapmaz — ağ gerektirir ve tek seferliktir. Veritabanı için
+  kurulum yoktur.
 
 ## What must be tested
 - Her iş kuralı (`docs/domain.md` BR-1…BR-n) en az bir unit testle, `[Trait("Rule", "BR-n")]` ile.

@@ -4,10 +4,10 @@
 Polsan Leave Manager, Polsan Teknoloji çalışanlarının (50–100 kişi, tek şirket / single-tenant)
 izin taleplerini, yönetici onaylarını ve izin bakiyelerini yöneten, şirket içi ağda çalışan bir
 web uygulamasıdır. Stil: **modüler monolit** — tek deploy edilebilir ASP.NET Core (.NET 10)
-uygulaması, Blazor arayüz, tek PostgreSQL veritabanı. Modüller derleme düzeyinde ayrı projelerdir
+uygulaması, Blazor arayüz, tek SQLite veritabanı (gömülü, kurulum gerektirmez). Modüller derleme düzeyinde ayrı projelerdir
 ve birbirine yalnızca `Contracts` projeleri üzerinden erişir. Gerekçe: bu ölçekte dağıtık
 mimarinin maliyeti faydasını aşar; sınırlar ise mimari testlerle korunur
-(ADR `0001-modular-monolith-dotnet-blazor-postgres.md`). Kimlik doğrulama uygulamanın kendi
+(ADR `0001-modular-monolith-dotnet-blazor-postgres.md`; veritabanı ADR `0003-sqlite-instead-of-postgresql.md`). Kimlik doğrulama uygulamanın kendi
 hesaplarıyla yapılır (ADR `0002-own-user-accounts.md`).
 
 Proje adlandırması: `Polsan.Leave.<Modül>.<Katman>` — katmanlar `Domain` (saf C#),
@@ -39,7 +39,7 @@ Mimari testler (ArchUnitNET, `tests/Polsan.Leave.Architecture.Tests`) ve derleme
 1. Bir modül başka bir modülün `Domain`, `Application` veya `Infrastructure` projesine referans
    vermez; yalnızca `Contracts` projesine. Bir modül başka bir modülün tablolarına erişmez.
 2. `*.Domain` projeleri EF Core, ASP.NET Core veya Blazor'a referans vermez.
-3. `Polsan.Leave.Web` içindeki Blazor bileşenleri `DbContext` (EF Core), Npgsql veya
+3. `Polsan.Leave.Web` içindeki Blazor bileşenleri `DbContext` (EF Core), `Microsoft.Data.Sqlite` veya
    `*.Infrastructure` tiplerini kullanmaz.
 4. `DateTime.Now`, `DateTime.UtcNow`, `DateTime.Today`, `DateTimeOffset.Now`, `DateTimeOffset.UtcNow`
    kullanımı yasaktır — zaman `TimeProvider` ile enjekte edilir (BannedApiAnalyzers, `BannedSymbols.txt`;

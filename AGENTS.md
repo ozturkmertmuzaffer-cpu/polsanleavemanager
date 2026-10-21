@@ -2,7 +2,7 @@
 
 **Polsan Leave Manager:** Polsan çalışanlarının (50–100 kişi, tek şirket) izin talep, yönetici onayı ve
 bakiye sistemi. 4857 md.53 hak ediş, iş günü bazlı 0,5 gün hassasiyet. Modüler monolit — .NET 10 +
-Blazor + PostgreSQL, şirket içi sunucu. Ekip: 5 geliştirici. Ayrıntılar aşağıdaki tabloda; buraya kopyalanmaz.
+Blazor + SQLite, şirket içi sunucu. Ekip: 5 geliştirici. Ayrıntılar aşağıdaki tabloda; buraya kopyalanmaz.
 
 ## Operating mode
 

@@ -14,7 +14,7 @@ Buradaki her kural ya araçla zorlanır (tercih edilen) ya da review'da kontrol 
 
 ## Language & framework versions
 - .NET 10 (LTS), C# 14 — SDK sürümü `global.json` ile sabitlenir.
-- ASP.NET Core 10 + Blazor (Interactive Server), EF Core 10 + Npgsql, PostgreSQL 16+.
+- ASP.NET Core 10 + Blazor (Interactive Server), EF Core 10 + SQLite (`Microsoft.Data.Sqlite`, ADR 0003).
 - ASP.NET Core Identity (kimlik doğrulama).
 - Test: xUnit v3 (`xunit.v3.mtp-off`, VSTest ile), Shouldly, bUnit, ArchUnitNET, Playwright for .NET.
 - Paket sürümleri `Directory.Packages.props` ile merkezi yönetilir (Central Package Management).
@@ -36,7 +36,8 @@ Buradaki her kural ya araçla zorlanır (tercih edilen) ya da review'da kontrol 
 - `catch` bloğu hatayı yutmaz: ya işler ya loglayıp yeniden fırlatır.
 
 ## Data rules
-- İzin günü ve bakiye: `decimal` — `double` / `float` yasak (0,5 gün).
+- İzin günü ve bakiye: `decimal` — `double` / `float` yasak (0,5 gün). **Veritabanında** yarım gün
+  birimi cinsinden tamsayı saklanır (1,5 gün = 3), dönüşümü EF value converter yapar (ADR 0003).
 - İzin tarihleri: `DateOnly`. Zaman damgaları: `DateTimeOffset`, UTC saklanır; arayüzde
   `Europe/Istanbul`'a çevrilir.
 - Şimdiki zaman yalnızca `TimeProvider` üzerinden alınır (`docs/architecture.md`, kural 4).

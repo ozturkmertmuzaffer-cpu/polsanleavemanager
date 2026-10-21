@@ -6,8 +6,7 @@ veri sayılır. Uygulama yalnızca şirket içi ağda, şirket içi sunucuda ça
 ## Secrets
 - Secrets never enter the repo, specs, prompts, or chat. `.env` is gitignored; provide `.env.example`.
 - Agents never print secret values, even when debugging.
-- Geliştirmede `dotnet user-secrets`, sunucuda ortam değişkenleri. Test veritabanı bağlantısı
-  `LEAVE_TEST_DB` ortam değişkeninden okunur.
+- Geliştirmede `dotnet user-secrets`, sunucuda ortam değişkenleri.
 
 ## Input & output
 - Tüm girdiler sınırda (form modeli / servis girişi) doğrulanır; sunucu tarafı doğrulama esastır,
@@ -31,10 +30,12 @@ veri sayılır. Uygulama yalnızca şirket içi ağda, şirket içi sunucuda ça
   Kimse kendi talebini onaylayamaz (BR-6). Her yetki kuralı testle korunur.
 - HTTPS zorunlu + HSTS (iç ağda da); anti-forgery token açık.
 - Onay, red, iptal ve bakiye düzeltmeleri denetim kaydına yazılır (kim, ne zaman, ne).
+- SQLite veritabanı dosyası (ADR 0003) yalnızca uygulama hesabının erişebildiği yerel bir dizinde
+  durur; ağ paylaşımına konmaz, web köküne konmaz ve düzenli yedeklenir (`VACUUM INTO`).
 
 ## Dependencies
 - Yeni bir NuGet paketi eklemek insan onayı ister (plan içinde gerekçesiyle belirtilir).
-- Lisans: MIT, Apache-2.0, BSD veya PostgreSQL License (Npgsql; plan 0001 R-5); aktif bakımı olan paketler.
+- Lisans: MIT, Apache-2.0 veya BSD; aktif bakımı olan paketler.
 - `dotnet list package --vulnerable --include-transitive` `scripts/check` içinde çalışır;
   bilinen açık bulunursa check kırmızı olur.
 
