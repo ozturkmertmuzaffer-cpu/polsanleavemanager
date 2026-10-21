@@ -36,6 +36,11 @@ Host: `Polsan.Leave.Web` (Blazor + composition root).
   `<Routes @rendermode="InteractiveServer" />` (`App.razor`), sayfalar kendi modunu seçmez; ilk
   istek sunucuda ön-render edilir. Spec 0001 iskeleti henüz statik SSR'dir; değişiklik ilk
   etkileşimli sayfayla F1'de yapılır.
+  **İstisna (review 0001 R2-L2):** `HttpContext` okuyan sayfalar — bugün `Error.razor` (hata kimliği) —
+  statik SSR'de kalır, çünkü interaktif devrede `HttpContext` null'dır ve hata kimliği kaybolur
+  (AC-4). Desen .NET şablonundakiyle aynıdır: sayfada `@attribute [ExcludeFromInteractiveRouting]`,
+  `App.razor`'da render modu `HttpContext.AcceptsInteractiveRouting() ? InteractiveServer : null`.
+  F1 spec'i "hata kimliği interaktif modda da görünür" için bir E2E kontrolü içerir.
 
 ## Forbidden dependencies (make them testable)
 Mimari testler (ArchUnitNET, `tests/Polsan.Leave.Architecture.Tests`) ve derleme analyzer'ı
