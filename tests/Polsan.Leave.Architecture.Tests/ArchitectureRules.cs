@@ -31,7 +31,7 @@ internal static class ArchitectureRules
     /// <summary>Rule 3: Blazor components never touch storage directly.</summary>
     public static IArchRule ComponentsHaveNoStorageAccess(GivenTypesConjunction componentTypes) =>
         componentTypes.Should().NotDependOnAnyTypesThat()
-            .ResideInNamespaceMatching(@"^(Microsoft\.EntityFrameworkCore|Npgsql|Polsan\.Leave\.\w+\.Infrastructure)(\.|$)")
+            .ResideInNamespaceMatching(@"^(Microsoft\.EntityFrameworkCore|Microsoft\.Data\.Sqlite|Polsan\.Leave\.\w+\.Infrastructure)(\.|$)")
             .Because("components call Application services only (docs/architecture.md, rule 3)");
 
     /// <summary>Rule 5 (partial proof, spec 0001 R-7): business modules have no HTTP client.</summary>

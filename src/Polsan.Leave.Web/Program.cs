@@ -1,6 +1,5 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
-using Npgsql;
 using Polsan.Leave.Web.Components;
 using Polsan.Leave.Web.Errors;
 using Polsan.Leave.Web.Health;
@@ -15,12 +14,7 @@ builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
-// Without a connection string the app still starts; the health check then reports Unhealthy.
-var connectionString = builder.Configuration.GetConnectionString("LeaveDb");
-if (!string.IsNullOrWhiteSpace(connectionString))
-{
-    builder.Services.AddSingleton(_ => NpgsqlDataSource.Create(connectionString));
-}
+// Without a LeaveDb connection string the app still starts; the health check then reports Unhealthy.
 builder.Services.AddHealthChecks()
     .AddCheck<DatabaseHealthCheck>("database");
 
