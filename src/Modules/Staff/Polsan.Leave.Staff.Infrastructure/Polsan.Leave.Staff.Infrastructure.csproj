@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Polsan.Leave.Staff.Application\Polsan.Leave.Staff.Application.csproj" />
+    <ProjectReference Include="..\Polsan.Leave.Staff.Domain\Polsan.Leave.Staff.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

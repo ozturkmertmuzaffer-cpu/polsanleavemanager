@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Polsan.Leave.Balance.Domain\Polsan.Leave.Balance.Domain.csproj" />
+    <ProjectReference Include="..\Polsan.Leave.Balance.Contracts\Polsan.Leave.Balance.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

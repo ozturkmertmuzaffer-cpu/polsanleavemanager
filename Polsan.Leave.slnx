@@ -1,0 +1,33 @@
+<Solution>
+  <Folder Name="/Modules/" />
+  <Folder Name="/Modules/Audit/">
+    <Project Path="src/Modules/Audit/Polsan.Leave.Audit.Application/Polsan.Leave.Audit.Application.csproj" />
+    <Project Path="src/Modules/Audit/Polsan.Leave.Audit.Contracts/Polsan.Leave.Audit.Contracts.csproj" />
+    <Project Path="src/Modules/Audit/Polsan.Leave.Audit.Domain/Polsan.Leave.Audit.Domain.csproj" />
+    <Project Path="src/Modules/Audit/Polsan.Leave.Audit.Infrastructure/Polsan.Leave.Audit.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Modules/Balance/">
+    <Project Path="src/Modules/Balance/Polsan.Leave.Balance.Application/Polsan.Leave.Balance.Application.csproj" />
+    <Project Path="src/Modules/Balance/Polsan.Leave.Balance.Contracts/Polsan.Leave.Balance.Contracts.csproj" />
+    <Project Path="src/Modules/Balance/Polsan.Leave.Balance.Domain/Polsan.Leave.Balance.Domain.csproj" />
+    <Project Path="src/Modules/Balance/Polsan.Leave.Balance.Infrastructure/Polsan.Leave.Balance.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Modules/Policy/">
+    <Project Path="src/Modules/Policy/Polsan.Leave.Policy.Application/Polsan.Leave.Policy.Application.csproj" />
+    <Project Path="src/Modules/Policy/Polsan.Leave.Policy.Contracts/Polsan.Leave.Policy.Contracts.csproj" />
+    <Project Path="src/Modules/Policy/Polsan.Leave.Policy.Domain/Polsan.Leave.Policy.Domain.csproj" />
+    <Project Path="src/Modules/Policy/Polsan.Leave.Policy.Infrastructure/Polsan.Leave.Policy.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Modules/Requests/">
+    <Project Path="src/Modules/Requests/Polsan.Leave.Requests.Application/Polsan.Leave.Requests.Application.csproj" />
+    <Project Path="src/Modules/Requests/Polsan.Leave.Requests.Contracts/Polsan.Leave.Requests.Contracts.csproj" />
+    <Project Path="src/Modules/Requests/Polsan.Leave.Requests.Domain/Polsan.Leave.Requests.Domain.csproj" />
+    <Project Path="src/Modules/Requests/Polsan.Leave.Requests.Infrastructure/Polsan.Leave.Requests.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/Modules/Staff/">
+    <Project Path="src/Modules/Staff/Polsan.Leave.Staff.Application/Polsan.Leave.Staff.Application.csproj" />
+    <Project Path="src/Modules/Staff/Polsan.Leave.Staff.Contracts/Polsan.Leave.Staff.Contracts.csproj" />
+    <Project Path="src/Modules/Staff/Polsan.Leave.Staff.Domain/Polsan.Leave.Staff.Domain.csproj" />
+    <Project Path="src/Modules/Staff/Polsan.Leave.Staff.Infrastructure/Polsan.Leave.Staff.Infrastructure.csproj" />
+  </Folder>
+</Solution>
